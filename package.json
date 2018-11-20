@@ -1,0 +1,32 @@
+{
+  "name": "react-native-svgwheel-menu",
+  "version": "1.1.3",
+  "description": "React Native Svg Wheel",
+  "main": "GeneratePathCanvas.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "d3": "^5.7.0",
+    "d3-shape": "^1.2.2",
+    "native-base": "^2.8.1",
+    "react-native-svg": "^8.0.8"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rantoinne/React-Native-SVGWheel-Menu.git"
+  },
+  "keywords": [
+    "React",
+    "Native",
+    "Svg",
+    "Wheel",
+    "Menu"
+  ],
+  "author": "Ayanworks Technologies",
+  "license": "ISC"
+}
