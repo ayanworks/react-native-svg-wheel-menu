@@ -61,6 +61,7 @@ class App extends Component {
     render() {
     return (
             <GeneratePathCanvas 
+                semiCircle= {false}
                 depth= {2}
                 homeTitle= 'Home'
                 userPurchases= {userPurchases} 
@@ -80,6 +81,7 @@ class App extends Component {
 | userPurchases     | true      |   An array of values to differentiate between parent and child levels |
 | pieColorArray   | true | An array of colors in hex code |
 | clickEvent | true      |   A function callback that handles child data and its name clicked at last level |
+| semiCircle| true  | A boolean to define the menu to be Semicircle for True and Circle for False |
 
 ## Stuff used to make this:
 
