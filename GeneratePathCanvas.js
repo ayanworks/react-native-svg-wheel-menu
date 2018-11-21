@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, View, ART, Animated, Easing, ImageBackground, BackHandler } from 'react-native';
+import { Platform, StyleSheet, View, ART, Animated, Easing, ImageBackground, BackHandler, Dimensions } from 'react-native';
 import { Text as Textual } from 'react-native';
 const { Surface, Group, Rectangle, Shape } = ART;
 import Svg, { Circle, G, Text, Path, Line, Use } from 'react-native-svg';
@@ -20,9 +20,9 @@ const pieWidth = 150;
 import * as shape from 'd3-shape';
 import * as d3 from 'd3';
 
-const path = d3.arc().outerRadius(80).padAngle(0.02).innerRadius(32);
+const path = d3.arc().outerRadius(80).padAngle(0).innerRadius(30);
 
-
+var devheight = Dimensions.get('window').height;
 class GeneratePathCanvas extends Component {
 	constructor() {
 		super();
@@ -58,7 +58,7 @@ class GeneratePathCanvas extends Component {
 		const sectionAngles = d3.pie().value((d) => d.price)(tempArray);
 		//  for home
 		this.setState({ parentAngles: sectionAngles });
-		// alert(JSON.stringify(this.state.parentAngles));
+
 	}
 
 	clickOnChildTitle() {
@@ -195,7 +195,36 @@ class GeneratePathCanvas extends Component {
             return p;
     }
 
+    halfCircleHelper (incoming) {
+    	var hex
+		var newOne = []
+		var len = incoming.length;
+		// alert(JSON.stringify(incoming));
+		incoming.map((item, idx)=> {
+			hex = Object.assign(item)
+				if(hex.startAngle === 0) {
+					hex.startAngle = Math.PI + (Math.PI / 2)
+					hex.endAngle = hex.startAngle + (hex.endAngle/2)
+				}
+				else {
+					hex.startAngle = newOne[idx-1].endAngle
+					hex.endAngle = hex.startAngle + Math.PI/len
+					if(newOne[idx-1].endAngle >= (Math.PI*2)) {
+						hex.startAngle = newOne[idx-1].endAngle - Math.PI*2
+						hex.endAngle = hex.startAngle + Math.PI/len
+					}
+				}
+		newOne.push(hex)
+		});
+		return newOne;
+    }
+
 	componentDidMount() {
+		if(this.props.semiCircle === true) {
+			const newOne = this.halfCircleHelper(this.state.parentAngles);
+			this.setState({parentAngles: newOne})
+		}
+
 		let point = this.state.parentAngles.length;
 		let pointer = this.props.pieColorArray.length;
 		if(point > pointer) {
@@ -228,7 +257,13 @@ class GeneratePathCanvas extends Component {
 		this.pushMeToStack(data, tempArray.length, idx);
 
 		const sectionAngles = d3.pie().value((d) => d.price)(tempArray);
-		this.setState({ childAngles: sectionAngles });
+		if(this.props.semiCircle === true) {
+			const newOne = this.halfCircleHelper(sectionAngles);
+			this.setState({ childAngles: newOne });
+		}
+		else {
+			this.setState({ childAngles: sectionAngles });
+		}
 	}
 
 	pushMeToStackLevel2(getter, trackerLength, idx) {
@@ -295,12 +330,12 @@ class GeneratePathCanvas extends Component {
 	}
 
 	render() {
-		return (<View>
+		return (<View style= {{flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', top: this.props.semiCircle?(devheight - 410):0}}>
 			{this.state.childAngles.length == 0 && this.state.level2ChildAngles.length == 0 ? (
 			<Svg viewBox="-100 -100 200 200" width={width} height={height}>
 					<G width={width / 2} height={height / 2}>
 						<Circle cx="0" cy="0" r="30" fill="#eedfcc" />
-						<Text fontSize="8" x={0} y={4} textAnchor="middle">
+						<Text fontSize="8" x={0} y={this.props.semiCircle?-4:4} textAnchor="middle" >
 							{this.props.homeTitle}
 						</Text>
 						{this.state.parentAngles.map((section, idx) => (
@@ -320,6 +355,7 @@ class GeneratePathCanvas extends Component {
               <GenerateArcText 
               section= {section}
               idx= {idx}
+              semi= {this.props.semiCircle}
               />
             </Animatee.G>
               
@@ -332,7 +368,7 @@ class GeneratePathCanvas extends Component {
 						<Circle cx="0" cy="0" r="30" fill={this.state.colorStack[0]}
 						onPress={() => this.clickOnChildTitle()}
 						 />
-						<Text fontSize="8" x={0} y={4} textAnchor="middle">
+						<Text fontSize="8" x={0} y={this.props.semiCircle?-4:4} textAnchor="middle">
 							{this.truncate(this.state.nameOfChild)}
 						</Text>
 
@@ -353,6 +389,7 @@ class GeneratePathCanvas extends Component {
               <GenerateArcText 
               section= {section}
               idx= {idx}
+              semi= {this.props.semiCircle}
               />
             </Animatee.G>
               
@@ -378,7 +415,7 @@ class GeneratePathCanvas extends Component {
 		                  fill="black"
 		                  fontSize="8"
 		                  x={0}
-		                  y={4}
+		                  y={this.props.semiCircle?-4:4}
 		                  textAnchor = "middle">{this.state.nameOfChildLevel2}</Text>
 		               { this.state.level2ChildAngles.map((section, idx) => (
 		                                   <Animatee.G
@@ -396,6 +433,7 @@ class GeneratePathCanvas extends Component {
 									              <GenerateArcText 
 									              section= {section}
 									              idx= {idx}
+									              semi= {this.props.semiCircle}
 									              />
 								            </Animatee.G>
 		                                 ))}

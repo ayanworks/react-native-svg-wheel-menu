@@ -11,8 +11,6 @@ const Animatee = {
 import * as shape from 'd3-shape';
 import * as d3 from 'd3';
 
-const path = d3.arc().outerRadius(80).padAngle(0.02).innerRadius(33);
-
 export default class GeneratePath extends Component {
 
   constructor(props) {
@@ -61,6 +59,7 @@ export default class GeneratePath extends Component {
             })}
              key={this.props.key}
              d={this.props.d}
+             stroke= 'white'
              strokeWidth={1} />
     );
   }
