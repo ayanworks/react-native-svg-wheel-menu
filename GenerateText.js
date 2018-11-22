@@ -53,7 +53,7 @@ export default class GenerateArcText extends Component {
 
   truncate(string) {
     if(this.props.semi) {
-      if (string.length > 8) return string.substring(0, 5) + '...';
+      if (string.length >= 8) return string.substring(0, 5) + '...';
       else return string;  
     }
     else {

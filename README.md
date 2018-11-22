@@ -9,6 +9,8 @@ npm install react-native-svgwheel-menu --save
 ## Demo
 ![alt text](https://i.postimg.cc/MGZ1z844/s1.png)
 ![alt text](https://i.postimg.cc/c4qYr32f/s2.png)
+![alt text](https://i.postimg.cc/JzWsWs4K/Screenshot-1542871933.png)
+![alt text](https://i.postimg.cc/0ydb59zv/Screenshot-1542871939.png)
 
 ```javascript
 import GeneratePathCanvas from "react-native-svgwheel-menu";
@@ -31,14 +33,14 @@ const userPurchases = [
     {
         id: '1.3',
         parent: '0.0',
-        itemName: 'PORTUGAL',
+        itemName: 'BELGIUM',
         price: 1,
         color: ''
     },
     {
         id: '1.4',
         parent: '0.0',
-        itemName: 'ENGLAND',
+        itemName: 'POLAND',
         price: 1,
         color: ''
     },
@@ -61,7 +63,7 @@ class App extends Component {
     render() {
     return (
             <GeneratePathCanvas 
-                semiCircle= {false}
+                semiCircle= {true}
                 depth= {2}
                 homeTitle= 'Home'
                 userPurchases= {userPurchases} 
